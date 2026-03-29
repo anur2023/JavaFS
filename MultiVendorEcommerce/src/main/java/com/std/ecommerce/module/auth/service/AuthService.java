@@ -1,5 +1,6 @@
 package com.std.ecommerce.module.auth.service;
 
+import com.std.ecommerce.module.auth.dto.LoginResponse;
 import com.std.ecommerce.module.auth.dto.RegisterRequest;
 import com.std.ecommerce.module.auth.dto.RegisterResponse;
 import com.std.ecommerce.module.auth.entity.User;
@@ -7,6 +8,9 @@ import com.std.ecommerce.module.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.std.ecommerce.module.auth.dto.LoginRequest;
+import com.std.ecommerce.module.auth.dto.LoginResponse;
+import com.std.ecommerce.config.JwtUtil;
 
 @Service
 public class AuthService {
@@ -16,6 +20,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public RegisterResponse register(RegisterRequest request) {
 
@@ -42,6 +49,28 @@ public class AuthService {
         response.setName(savedUser.getName());
         response.setEmail(savedUser.getEmail());
         response.setRole(savedUser.getRole());
+
+        return response;
+    }
+    public LoginResponse login(LoginRequest request) {
+
+        // 🔹 Check if user exists
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 🔹 Check password
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        // 🔥 Generate JWT Token
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        // 🔹 Prepare response
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole().name());
 
         return response;
     }

@@ -1,0 +1,66 @@
+System Architecture Design: Multi-Vendor E-Commerce Platform
+High-Level Architecture Diagram (Conceptual)
+[Browser] --> [React Frontend] --> [API Gateway] --> [Spring Boot Backend] --> [Database]
+                    |                      |                    |
+               (State Mgmt)           (JWT Auth)         (Business Logic)
+1. Backend Architecture (Spring Boot)
+Layered architecture following your Controller -> Service -> Repository -> Entity pattern.
+LayerPurposeKey Components for this Use CaseController LayerHandles HTTP requests (REST APIs)AuthController, ProductController, CartController, OrderController, 
+VendorController, PaymentControllerService LayerContains business logicUserService, ProductService, CartService, OrderService,
+ PaymentSplitService, InventoryService, NotificationServiceRepository LayerTalks to databaseUserRepository, ProductRepository, VendorRepository, 
+OrderRepository, CartItemRepositoryEntity/Model LayerMaps to database tablesUser, Vendor, Product, Cart, Order, OrderItem, 
+PaymentTransactionKey Backend Features to Highlight
+* JWT Authentication with Role-Based Access (ROLE_CUSTOMER, ROLE_VENDOR, ROLE_ADMIN)
+* Commission Splitting Logic in PaymentSplitService
+* Real-time Inventory using optimistic locking (@Version annotation)
+* REST APIs documented via Swagger/OpenAPI
+
+2. Frontend Architecture (React)
+ComponentPurposeImplementation for this Use CasePagesDifferent screensLoginPage, CustomerDashboard, VendorDashboard, 
+ProductComparePage, UnifiedCartPage, CheckoutPage, 
+OrderTrackingPageComponentsReusable UI blocksProductCard, VendorCard, RatingStars, PriceFilter, CartItem, 
+OrderStatusBadgeServicesAPI calls to backendauthService.js, productService.js, cartService.js,
+ orderService.js, 
+vendorService.jsState ManagementManage app dataRedux Toolkit or Context API (for cart, user session,
+ multi-vendor cart)Frontend Specifics for Multi-Vendor
+* Unified Cart View — Groups items by vendor, shows subtotal per vendor
+* Separate Checkout Flows — User checks out vendor-by-vendor or combined with split payment
+* Real-time Inventory Display — Shows "Only X left" from each vendor
+
+3. Database Design (MySQL / PostgreSQL)
+Core Entities (Tables)
+TableKey Attributesusersuser_id (PK), name, email, password_hash, role (CUSTOMER/VENDOR/ADMIN)vendorsvendor_id (PK), user_id (FK), store_name, description, rating, total_salescategoriescategory_id (PK), name, parent_category_idproductsproduct_id (PK), vendor_id (FK), category_id (FK), name, price, stock_quantity, description, image_urlcartscart_id (PK), user_id (FK)cart_itemscart_item_id (PK), cart_id (FK), product_id (FK), vendor_id (FK), quantity, price_at_addordersorder_id (PK), user_id (FK), vendor_id (FK), order_date, total_amount, status, payment_statusorder_itemsorder_item_id (PK), order_id (FK), product_id (FK), quantity, pricepaymentspayment_id (PK), order_id (FK), amount, commission_amount, vendor_payout_amount, statusKey Relationships
+* One-to-Many: vendors ? products
+* One-to-Many: users ? orders (as customer)
+* Many-to-Many: carts ? products (via cart_items)
+
+4. Technology Stack Summary (For Approval)
+LayerTechnologyWhy for this use caseFrontendReact + Redux ToolkitManages complex multi-vendor cart stateBackendSpring Boot (Java)Robust for e-commerce, handles concurrent inventory updatesDatabaseMySQL / PostgreSQLACID compliance for payments and ordersAPI SecurityJWT + Spring SecurityRole-based access (Customer vs Vendor vs Admin)API TestingPostman / SwaggerFor official validationVersion ControlGitHubCode & design maintenanceAdditionalRedis (optional)For session management & flash sale counters
+5. How This Design Meets Your Core Features
+Core FeatureImplemented InBrowse products from multiple vendorsProductController + ProductServiceUnified cart across vendorsCartService + Redux stateSeparate checkout per vendorOrderService + CheckoutPageReal-time inventory syncOptimistic locking in Product entityPayment with commission splitPaymentSplitService + payments tableJWT + RBACSpring Security + User entity rolesVendor dashboard with analyticsVendorController + OrderRepository queries
+
+
+
+
+
+
+
+
+Visual to Present to Officials (Slide-Ready)
+???????????????????????????????????????????????????????????????
+?                    Multi-Vendor E-Commerce                   ?
+???????????????????????????????????????????????????????????????
+?  REACT FRONTEND          ?      SPRING BOOT BACKEND         ?
+?  ????????????????        ?      ????????????????????????    ?
+?  ? Pages        ? ?????  ?      ? Controllers (REST)   ?    ?
+?  ? Components   ? ?????  ? ???  ? Services (Logic)     ?    ?
+?  ? State (Redux)?        ?      ? Repositories (DB)    ?    ?
+?  ? Services     ?        ?      ? Entities (Models)    ?    ?
+?  ????????????????        ?      ????????????????????????    ?
+?         ?                 ?                   ?              ?
+?         ?                 ?                   ?              ?
+?  [JWT Token]              ?            ??????????????        ?
+?                           ?            ?  MySQL /   ?        ?
+?                           ?            ? PostgreSQL ?        ?
+?                           ?            ??????????????        ?
+???????????????????????????????????????????????????????????????
