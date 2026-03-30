@@ -1,45 +1,28 @@
-package com.std.ecommerce.module.cart.entity;
+package com.std.ecommerce.module.cart.dto;
 
-import com.std.ecommerce.module.auth.entity.User;
-import jakarta.persistence.*;
+public class CartResponse {
 
-@Entity
-@Table(name = "carts")
-public class Cart {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // 🔹 One cart belongs to one user
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    // 🔹 Product info stored directly (no Product entity yet)
-    @Column(name = "product_id", nullable = false)
+    private Long userId;
     private Long productId;
-
-    @Column(name = "product_name", nullable = false)
     private String productName;
-
-    @Column(name = "product_price", nullable = false)
     private Double productPrice;
-
-    @Column(nullable = false)
     private Integer quantity;
+    private Double totalPrice; // productPrice * quantity
 
     // 🔹 Default Constructor
-    public Cart() {}
+    public CartResponse() {}
 
     // 🔹 Parameterized Constructor
-    public Cart(Long id, User user, Long productId, String productName, Double productPrice, Integer quantity) {
+    public CartResponse(Long id, Long userId, Long productId, String productName,
+                        Double productPrice, Integer quantity, Double totalPrice) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.quantity = quantity;
+        this.totalPrice = totalPrice;
     }
 
     // 🔹 Getters and Setters
@@ -47,8 +30,8 @@ public class Cart {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
     public Long getProductId() { return productId; }
     public void setProductId(Long productId) { this.productId = productId; }
@@ -61,4 +44,7 @@ public class Cart {
 
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
+
+    public Double getTotalPrice() { return totalPrice; }
+    public void setTotalPrice(Double totalPrice) { this.totalPrice = totalPrice; }
 }

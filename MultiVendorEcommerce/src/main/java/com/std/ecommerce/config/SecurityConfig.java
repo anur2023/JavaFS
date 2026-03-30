@@ -50,16 +50,19 @@ public class SecurityConfig {
                         // ✅ Public endpoints
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
 
-                        // ✅ NEW: Public category read (GET only)
+                        // ✅ Public category read (GET only)
                         .requestMatchers(HttpMethod.GET, "/api/categories", "/api/categories/**").permitAll()
 
-                        // ✅ NEW: Admin-only category write operations
+                        // ✅ Admin-only category write operations
                         .requestMatchers("/api/categories/admin/**").hasRole("ADMIN")
 
-                        // 🔥 Role-based endpoints (for future)
+                        // 🔥 Role-based endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/vendor/**").hasRole("VENDOR")
                         .requestMatchers("/api/customer/**").hasRole("CUSTOMER")
+
+                        // ✅ NEW: Cart - any logged-in user can access
+                        .requestMatchers("/api/cart/**").authenticated()
 
                         // 🔒 All others require authentication
                         .anyRequest().authenticated()
