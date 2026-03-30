@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -48,6 +49,12 @@ public class SecurityConfig {
 
                         // ✅ Public endpoints
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+
+                        // ✅ NEW: Public category read (GET only)
+                        .requestMatchers(HttpMethod.GET, "/api/categories", "/api/categories/**").permitAll()
+
+                        // ✅ NEW: Admin-only category write operations
+                        .requestMatchers("/api/categories/admin/**").hasRole("ADMIN")
 
                         // 🔥 Role-based endpoints (for future)
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
