@@ -1,47 +1,24 @@
-package com.std.ecommerce.module.payment.entity;
+package com.std.ecommerce.module.payment.dto;
 
-import com.std.ecommerce.module.order.entity.Order;
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "payments")
-public class Payment {
+public class PaymentResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // One payment per order
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false, unique = true)
-    private Order order;
-
-    @Column(nullable = false, precision = 10, scale = 2)
+    private Long orderId;
     private BigDecimal amount;
-
-    // SUCCESS, FAILED, PENDING
-    @Column(nullable = false)
     private String status;
-
-    // UPI, CARD, COD, NET_BANKING
-    @Column(nullable = false)
     private String paymentMethod;
-
-    // Transaction reference ID from payment gateway
-    @Column
     private String transactionId;
-
-    @Column(nullable = false)
     private LocalDateTime paidAt;
 
-    public Payment() {}
+    public PaymentResponse() {}
 
-    public Payment(Long id, Order order, BigDecimal amount, String status,
-                   String paymentMethod, String transactionId, LocalDateTime paidAt) {
+    public PaymentResponse(Long id, Long orderId, BigDecimal amount, String status,
+                           String paymentMethod, String transactionId, LocalDateTime paidAt) {
         this.id = id;
-        this.order = order;
+        this.orderId = orderId;
         this.amount = amount;
         this.status = status;
         this.paymentMethod = paymentMethod;
@@ -52,8 +29,8 @@ public class Payment {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Order getOrder() { return order; }
-    public void setOrder(Order order) { this.order = order; }
+    public Long getOrderId() { return orderId; }
+    public void setOrderId(Long orderId) { this.orderId = orderId; }
 
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
