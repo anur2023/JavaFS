@@ -1,35 +1,20 @@
-package com.std.ecommerce.module.category.entity;
+package com.std.ecommerce.module.category.dto;
 
-import jakarta.persistence.*;
+public class CategoryRequest {
 
-@Entity
-@Table(name = "categories")
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
     private String name;
-
-    @Column
     private String description;
 
     // 🔹 Default Constructor
-    public Category() {}
+    public CategoryRequest() {}
 
     // 🔹 Parameterized Constructor
-    public Category(Long id, String name, String description) {
-        this.id = id;
+    public CategoryRequest(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
     // 🔹 Getters and Setters
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
