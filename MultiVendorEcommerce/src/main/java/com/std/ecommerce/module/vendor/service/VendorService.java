@@ -6,7 +6,7 @@ import com.std.ecommerce.module.auth.repository.UserRepository;
 import com.std.ecommerce.module.vendor.dto.VendorRequest;
 import com.std.ecommerce.module.vendor.dto.VendorResponse;
 import com.std.ecommerce.module.vendor.entity.Vendor;
-import com.std.ecommerce.module.vendor.repository.VendorRepo;
+import com.std.ecommerce.module.vendor.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class VendorService {
 
     @Autowired
-    private VendorRepo vendorRepo;
+    private VendorRepository vendorRepo;
 
     @Autowired
     private UserRepository userRepository;
