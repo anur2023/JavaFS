@@ -4,7 +4,6 @@ import com.std.ecommerce.module.auth.entity.User;
 import com.std.ecommerce.module.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -33,39 +32,37 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        // 🔹 Get Authorization Header
         String authHeader = request.getHeader("Authorization");
+
         String token = null;
         String email = null;
 
+        // 🔹 Extract token
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            try {
-                email = jwtUtil.extractEmail(token);
-            } catch (Exception e) {
-                email = null; // bad token, ignore
-            }
+            email = jwtUtil.extractEmail(token);
         }
 
+        // 🔹 Validate token & set authentication
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             User user = userRepository.findByEmail(email).orElse(null);
 
             if (user != null && jwtUtil.validateToken(token)) {
 
-                // 🔥 KEY FIX: ROLE_ prefix required by Spring Security
-                SimpleGrantedAuthority authority =
-                        new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
-
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
-                                user, null, Collections.singletonList(authority)
+                                user, null, Collections.emptyList()
                         );
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
 
+        // 🔹 Continue request
         filterChain.doFilter(request, response);
     }
 }
