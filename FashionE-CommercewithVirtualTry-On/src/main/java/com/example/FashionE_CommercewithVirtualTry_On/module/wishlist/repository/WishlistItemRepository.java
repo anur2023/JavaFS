@@ -1,0 +1,11 @@
+package com.example.FashionE_CommercewithVirtualTry_On.module.wishlist.repository;
+
+import com.example.FashionE_CommercewithVirtualTry_On.module.wishlist.entity.WishlistItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface WishlistItemRepository extends JpaRepository<WishlistItem, Long> {
+    Optional<WishlistItem> findByWishlistWishlistIdAndProductProductId(Long wishlistId, Long productId);
+    boolean existsByWishlistWishlistIdAndProductProductId(Long wishlistId, Long productId);
+}
