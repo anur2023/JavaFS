@@ -50,16 +50,22 @@ public class SecurityConfig {
                         // 👤 CUSTOMER APIs
                         .requestMatchers("/api/user/**").hasRole("CUSTOMER")
                         .requestMatchers("/api/orders/**").hasRole("CUSTOMER")
-                        .requestMatchers("/api/tryon/**").hasRole("CUSTOMER")   // ✅ ADDED
+                        .requestMatchers("/api/tryon/**").hasRole("CUSTOMER")
 
                         // 🛠️ ADMIN APIs
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
 
-                        // 📂 Static uploads (VERY IMPORTANT for images)
-                        .requestMatchers("/uploads/**").permitAll()  // ✅ ADDED
+                        // 📖 Lookbook - customers browse published lookbooks
+                        .requestMatchers("/api/user/lookbooks/**").hasRole("CUSTOMER")
 
-                        // 🔒 बाकी सब secured
+                        // 📖 Lookbook - admin manages all lookbooks
+                        .requestMatchers("/api/admin/lookbooks/**").hasRole("ADMIN")
+
+                        // 📂 Static uploads (public image access)
+                        .requestMatchers("/uploads/**").permitAll()
+
+                        // 🔒 Everything else requires authentication
                         .anyRequest().authenticated()
                 )
 
