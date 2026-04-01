@@ -45,12 +45,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (jwtTokenProvider.validateToken(token)) {
 
-                // 🔥 Extract role from token
                 Claims claims = jwtTokenProvider.getClaims(token);
                 String role = claims.get("role", String.class);
 
+                // ✅ FIX HERE
+                if (!role.startsWith("ROLE_")) {
+                    role = "ROLE_" + role;
+                }
+
                 SimpleGrantedAuthority authority =
-                        new SimpleGrantedAuthority("ROLE_" + role);
+                        new SimpleGrantedAuthority(role);
 
                 User userDetails = new User(
                         email,

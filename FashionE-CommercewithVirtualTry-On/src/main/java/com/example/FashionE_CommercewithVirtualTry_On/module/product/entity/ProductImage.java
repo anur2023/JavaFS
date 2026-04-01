@@ -2,16 +2,13 @@ package com.example.FashionE_CommercewithVirtualTry_On.module.product.entity;
 
 import jakarta.persistence.*;
 
-/**
- * ProductImage entity stub — needed by OrderItem to fetch the first image URL.
- */
 @Entity
 @Table(name = "product_images")
 public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long imageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
@@ -23,10 +20,10 @@ public class ProductImage {
     @Column(name = "is_primary")
     private boolean primary = false;
 
-    // ─── Getters & Setters ────────────────────────────────────────────────────
+    public ProductImage() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getImageId() { return imageId; }
+    public void setImageId(Long imageId) { this.imageId = imageId; }
 
     public Product getProduct() { return product; }
     public void setProduct(Product product) { this.product = product; }

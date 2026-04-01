@@ -33,10 +33,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // ❌ Disable CSRF (for REST APIs)
+                // ❌ Disable CSRF (REST API)
                 .csrf(csrf -> csrf.disable())
 
-                // ❌ No session (JWT based)
+                // ❌ Stateless session (JWT)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -49,16 +49,21 @@ public class SecurityConfig {
 
                         // 👤 CUSTOMER APIs
                         .requestMatchers("/api/user/**").hasRole("CUSTOMER")
+                        .requestMatchers("/api/orders/**").hasRole("CUSTOMER")
+                        .requestMatchers("/api/tryon/**").hasRole("CUSTOMER")   // ✅ ADDED
 
                         // 🛠️ ADMIN APIs
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
 
-                        // 🔒 All other APIs require login
+                        // 📂 Static uploads (VERY IMPORTANT for images)
+                        .requestMatchers("/uploads/**").permitAll()  // ✅ ADDED
+
+                        // 🔒 बाकी सब secured
                         .anyRequest().authenticated()
                 )
 
-                // 🔐 Add JWT Filter before UsernamePasswordAuthenticationFilter
+                // 🔐 JWT Filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
