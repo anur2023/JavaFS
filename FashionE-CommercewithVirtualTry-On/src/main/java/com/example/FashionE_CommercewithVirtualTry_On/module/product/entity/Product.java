@@ -2,6 +2,8 @@ package com.example.FashionE_CommercewithVirtualTry_On.module.product.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -38,6 +40,9 @@ public class Product {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductImage> images = new ArrayList<>();
 
     // 🔹 Default Constructor
     public Product() {
@@ -178,7 +183,11 @@ public class Product {
         this.updatedAt = updatedAt;
     }
 
-    public Object getImages() {
-        return null;
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
     }
 }

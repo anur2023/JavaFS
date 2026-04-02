@@ -25,13 +25,17 @@ public class Order {
 
     @Column(nullable = false)
     private Double totalAmount;
-
+    @Column(name = "final_amount", nullable = false)
+    private Double finalAmount;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
 
     @Column(nullable = false)
     private String shippingAddress;
+
+    @Column(name = "order_number", nullable = false)
+    private String orderNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -72,4 +76,19 @@ public class Order {
 
     public LocalDateTime getDeliveryEstimate() { return deliveryEstimate; }
     public void setDeliveryEstimate(LocalDateTime deliveryEstimate) { this.deliveryEstimate = deliveryEstimate; }
+
+    public Double getFinalAmount() {
+        return finalAmount;
+    }
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public void setFinalAmount(Double finalAmount) {
+        this.finalAmount = finalAmount;
+    }
 }

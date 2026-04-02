@@ -103,7 +103,8 @@ public class OrderService {
 
         order.setOrderItems(items);
         order.setTotalAmount(total);
-
+        order.setFinalAmount(total);
+        order.setOrderNumber("ORD-" + System.currentTimeMillis());
         Order saved = orderRepository.save(order);
         return toResponse(saved);
     }
