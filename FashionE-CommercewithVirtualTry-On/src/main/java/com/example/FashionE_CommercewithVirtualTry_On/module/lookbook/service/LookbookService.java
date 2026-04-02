@@ -294,14 +294,14 @@ public class LookbookService {
                 .orElse(null);
     }
 
-    private String resolvePrimaryImageUrl(Product product) {
-        if (product.getImages() == null || product.getImages().isEmpty()) return null;
-        return product.getImages().stream()
-                .filter(ProductImage::isPrimary)
-                .map(ProductImage::getImageUrl)
-                .findFirst()
-                .orElse(product.getImages().get(0).getImageUrl());
-    }
+//    private String resolvePrimaryImageUrl(Product product) {
+//        if (product.getImages() == null || product.getImages().isEmpty()) return null;
+//        return product.getImages().stream()
+//                .filter(ProductImage::isPrimary)
+//                .map(ProductImage::getImageUrl)
+//                .findFirst()
+//                .orElse(product.getImages().get(0).getImageUrl());
+//    }
 
     private LookbookItemResponse mapItemToResponse(LookbookItem item) {
         LookbookItemResponse res = new LookbookItemResponse();
@@ -314,6 +314,10 @@ public class LookbookService {
         res.setStylingNote(item.getStylingNote());
         res.setDisplayOrder(item.getDisplayOrder());
         return res;
+    }
+
+    private String resolvePrimaryImageUrl(Product product) {
+        return "";
     }
 
     private LookbookResponse mapToResponse(Lookbook lookbook, Long currentUserId) {

@@ -1,26 +1,13 @@
-package com.example.FashionE_CommercewithVirtualTry_On.module.product.entity;
+package com.example.FashionE_CommercewithVirtualTry_On.module.product.dto.response;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "products")
-public class Product {
+public class ProductResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(length = 1000)
     private String description;
-
-    @Column(nullable = false)
     private Double price;
-
-    @Column(nullable = false)
     private Integer stockQuantity;
 
     private String category;
@@ -28,10 +15,7 @@ public class Product {
     private String occasion;
     private String brand;
 
-    @Column(length = 1000)
     private String materialDetails;
-
-    @Column(length = 1000)
     private String careInstructions;
 
     private Long sizeChartId;
@@ -40,14 +24,14 @@ public class Product {
     private LocalDateTime updatedAt;
 
     // 🔹 Default Constructor
-    public Product() {
+    public ProductResponse() {
     }
 
     // 🔹 Parameterized Constructor
-    public Product(Long productId, String name, String description, Double price, Integer stockQuantity,
-                   String category, String style, String occasion, String brand,
-                   String materialDetails, String careInstructions, Long sizeChartId,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductResponse(Long productId, String name, String description, Double price, Integer stockQuantity,
+                           String category, String style, String occasion, String brand,
+                           String materialDetails, String careInstructions, Long sizeChartId,
+                           LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -176,9 +160,5 @@ public class Product {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Object getImages() {
-        return null;
     }
 }

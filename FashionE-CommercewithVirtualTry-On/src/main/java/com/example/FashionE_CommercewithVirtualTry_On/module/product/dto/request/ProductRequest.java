@@ -1,26 +1,10 @@
-package com.example.FashionE_CommercewithVirtualTry_On.module.product.entity;
+package com.example.FashionE_CommercewithVirtualTry_On.module.product.dto.request;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+public class ProductRequest {
 
-@Entity
-@Table(name = "products")
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(length = 1000)
     private String description;
-
-    @Column(nullable = false)
     private Double price;
-
-    @Column(nullable = false)
     private Integer stockQuantity;
 
     private String category;
@@ -28,27 +12,19 @@ public class Product {
     private String occasion;
     private String brand;
 
-    @Column(length = 1000)
     private String materialDetails;
-
-    @Column(length = 1000)
     private String careInstructions;
 
     private Long sizeChartId;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
     // 🔹 Default Constructor
-    public Product() {
+    public ProductRequest() {
     }
 
     // 🔹 Parameterized Constructor
-    public Product(Long productId, String name, String description, Double price, Integer stockQuantity,
-                   String category, String style, String occasion, String brand,
-                   String materialDetails, String careInstructions, Long sizeChartId,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.productId = productId;
+    public ProductRequest(String name, String description, Double price, Integer stockQuantity,
+                          String category, String style, String occasion, String brand,
+                          String materialDetails, String careInstructions, Long sizeChartId) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -60,19 +36,9 @@ public class Product {
         this.materialDetails = materialDetails;
         this.careInstructions = careInstructions;
         this.sizeChartId = sizeChartId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     // 🔹 Getters and Setters
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
 
     public String getName() {
         return name;
@@ -160,25 +126,5 @@ public class Product {
 
     public void setSizeChartId(Long sizeChartId) {
         this.sizeChartId = sizeChartId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Object getImages() {
-        return null;
     }
 }
