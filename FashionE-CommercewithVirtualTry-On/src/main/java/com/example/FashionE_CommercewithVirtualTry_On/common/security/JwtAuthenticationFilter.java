@@ -36,45 +36,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
+        // ✅ Step 1: Check header
         if (header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            email = jwtTokenProvider.getEmailFromToken(token);
+
+            // ✅ Step 2: Validate FIRST
+            if (jwtTokenProvider.validateToken(token)) {
+                email = jwtTokenProvider.getEmailFromToken(token);
+            }
         }
 
+        // ✅ Step 3: Set authentication
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            if (jwtTokenProvider.validateToken(token)) {
+            Claims claims = jwtTokenProvider.getClaims(token);
+            String role = claims.get("role", String.class);
 
-                Claims claims = jwtTokenProvider.getClaims(token);
-                String role = claims.get("role", String.class);
-
-                // ✅ FIX HERE
-                if (!role.startsWith("ROLE_")) {
-                    role = "ROLE_" + role;
-                }
-
-                SimpleGrantedAuthority authority =
-                        new SimpleGrantedAuthority(role);
-
-                User userDetails = new User(
-                        email,
-                        "",
-                        Collections.singletonList(authority)
-                );
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (!role.startsWith("ROLE_")) {
+                role = "ROLE_" + role;
             }
+
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
+
+            User userDetails = new User(
+                    email,
+                    "",
+                    Collections.singletonList(authority)
+            );
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+
+            authentication.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
