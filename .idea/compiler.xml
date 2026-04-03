@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="PharmacyOnlineStore" />
       </profile>
       <profile name="Annotation profile for stdAttendance" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -22,6 +23,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="PharmacyOnlineStore" options="-parameters" />
       <module name="stdAttendance" options="-parameters" />
       <module name="stdAttendance (1)" options="-parameters" />
       <module name="stdAttendance (2)" options="-parameters" />
