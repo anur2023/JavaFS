@@ -36,7 +36,7 @@ public class SecurityConfig {
                 // ❌ Disable CSRF (for REST APIs)
                 .csrf(csrf -> csrf.disable())
 
-                // ❌ Stateless session (JWT)
+                // ❌ No session (JWT based)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -44,24 +44,21 @@ public class SecurityConfig {
                 // 🔐 Authorization Rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔓 Public APIs (ONLY these)
-                        .requestMatchers(
-                                "/api/auth/register",
-                                "/api/auth/login",
-                                "/api/auth/create-admin" // ⚠️ REMOVE in production
-                        ).permitAll()
+                        // 🔓 Public APIs
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // 👤 CUSTOMER APIs
+                        .requestMatchers("/api/user/**").hasRole("CUSTOMER")
 
                         // 🛠️ ADMIN APIs
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
 
-                        // 👤 CUSTOMER APIs (optional, if you use this path)
-                        .requestMatchers("/api/user/**").hasRole("CUSTOMER")
-
-                        // 🔒 All other APIs require authentication
+                        // 🔒 All other APIs require login
                         .anyRequest().authenticated()
                 )
 
-                // 🔐 Add JWT Filter
+                // 🔐 Add JWT Filter before UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

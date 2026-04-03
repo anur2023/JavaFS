@@ -2,11 +2,11 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="stdAttendance (1)" />
       </profile>
       <profile name="Annotation profile for stdAttendance" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -14,8 +14,8 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.32/lombok-1.18.32.jar" />
         </processorPath>
+        <module name="stdAttendance (1)" />
         <module name="stdAttendance" />
       </profile>
     </annotationProcessing>
@@ -24,6 +24,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="stdAttendance" options="-parameters" />
       <module name="stdAttendance (1)" options="-parameters" />
+      <module name="stdAttendance (2)" options="-parameters" />
     </option>
   </component>
 </project>
