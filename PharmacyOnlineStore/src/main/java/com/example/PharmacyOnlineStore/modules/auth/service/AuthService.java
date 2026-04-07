@@ -45,6 +45,8 @@ public class AuthService {
         user.setAddress(request.getAddress());
         user.setRole(request.getRole());
 
+        user.setEnabled(true); // ✅ ADD THIS LINE
+
         userRepository.save(user);
 
         return "Registration successful. Welcome, " + user.getFullName() + "!";
