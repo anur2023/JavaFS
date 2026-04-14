@@ -1,7 +1,10 @@
 package com.example.FashionE_CommercewithVirtualTry_On.module.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -39,9 +42,13 @@ public class Product {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    // ✅ Relationship with ProductImage
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ProductImage> images;
+
     // 🔹 Default Constructor
-    public Product() {
-    }
+    public Product() {}
 
     // 🔹 Parameterized Constructor
     public Product(Long productId, String name, String description, Double price, Integer stockQuantity,
@@ -176,5 +183,13 @@ public class Product {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
     }
 }

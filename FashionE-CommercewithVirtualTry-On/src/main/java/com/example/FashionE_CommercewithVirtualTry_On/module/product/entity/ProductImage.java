@@ -18,7 +18,7 @@ public class ProductImage {
     private String imageUrl;
 
     @Column(name = "is_primary")
-    private boolean primary = false;
+    private boolean primary;
 
     public ProductImage() {}
 
